@@ -12,12 +12,11 @@
 
 %%
 
-// Function to handle end of input
 int yywrap() {
-    return 1; // Indicates no more input
+    return 1; 
 }
 
 int main() {
-    yylex(); // Start the lexer
+    yylex(); 
     return 0;
 }
