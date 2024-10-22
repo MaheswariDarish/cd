@@ -1,39 +1,46 @@
-
 %{
-    #include <stdio.h>
-    int valid = 1;
+#include <stdio.h>
+#include <stdlib.h>
+void yyerror(const char *s);
 %}
 
-%token DO WHILE LPAREN RPAREN STMT SEMICOLON NEWLINE
+%token ID NUM DO WHILE LE GE EQ NE
 
 %%
 
-start: do_while NEWLINE;
 
-do_while:
-    DO stmt WHILE LPAREN condition RPAREN SEMICOLON  // do-while syntax
-    ;
+S : DO '{' BODY '}' WHILE '(' E ')' ';' { printf("Do-While loop accepted\n"); }
+  ;
 
-condition:
-    STMT op STMT
-    ;
-stmt:
-STMT op STMT SEMICOLON
-;
+
+BODY : BODY E ';' 
+     | E ';'
+     ;
+
+
+E : ID '=' E
+  | E '+' E
+  | E '-' E
+  | E '*' E
+  | E '/' E
+  | E LE E
+  |E  GE E
+  |E NE E
+  |E EQ E
+  | ID
+  | NUM
+  ;
 
 %%
 
-int yyerror() {
-    valid = 0;
-    printf("Invalid syntax.\n");
-    return 1;
+
+void yyerror(const char *s) {
+    fprintf(stderr, "Error: %s\n", s);
 }
 
-void main() {
-    printf("Enter the do-while loop:\n");
-    yyparse();
 
-    if (valid) {
-        printf("Valid syntax.\n");
-    }
+int main() {
+    printf("Enter the do-while statement:\n");
+    yyparse();
+    return 0;
 }

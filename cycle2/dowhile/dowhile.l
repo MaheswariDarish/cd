@@ -1,23 +1,35 @@
-
 %{
-    #include "y.tab.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include "y.tab.h" 
 %}
 
 %%
 
-"do"                return DO;
-"while"             return WHILE;
-"("                 return LPAREN;
-")"                 return RPAREN;
-";"                 return SEMICOLON;
-"=="|">="|     return op;
-[a-zA-Z0-9]+        return STMT;
-\n                  return NEWLINE;
-[ \t]               ;   // Ignore whitespace
-.                   ;   // Ignore other characters
+
+[\t ]+       ;  
+\n           ;  
+
+do           return DO;
+while        return WHILE;
+"<="         return LE;
+">="         return GE;
+"=="         return EQ;
+"!="         return NE;
+[0-9]+       return NUM;            
+[a-zA-Z][a-zA-Z0-9]* return ID;     
+.            return yytext[0];       
 
 %%
+
 
 int yywrap() {
     return 1;
 }
+
+
+/*TO RUN
+flex dowhile.l
+yacc -d dowhile.y
+ gcc y.tab.c lex.yy.c -lfl
+ ./a.out*/

@@ -186,14 +186,14 @@ typedef
 
 
  #line 169 "/usr/share/bison++/bison.h"
-#define	DO	258
-#define	WHILE	259
-#define	LPAREN	260
-#define	RPAREN	261
-#define	SEMICOLON	262
-#define	IDENTIFIER	263
-#define	NUMBER	264
-#define	ASSIGN	265
+#define	ID	258
+#define	NUM	259
+#define	DO	260
+#define	WHILE	261
+#define	LE	262
+#define	GE	263
+#define	EQ	264
+#define	NE	265
 
 
 #line 169 "/usr/share/bison++/bison.h"
@@ -242,14 +242,14 @@ public:
   /* static const int token ... */
   
  #line 212 "/usr/share/bison++/bison.h"
+static const int ID;
+static const int NUM;
 static const int DO;
 static const int WHILE;
-static const int LPAREN;
-static const int RPAREN;
-static const int SEMICOLON;
-static const int IDENTIFIER;
-static const int NUMBER;
-static const int ASSIGN;
+static const int LE;
+static const int GE;
+static const int EQ;
+static const int NE;
 
 
 #line 212 "/usr/share/bison++/bison.h"
@@ -258,14 +258,14 @@ static const int ASSIGN;
   enum YY_parse_ENUM_TOKEN { YY_parse_NULL_TOKEN=0
   
  #line 215 "/usr/share/bison++/bison.h"
-	,DO=258
-	,WHILE=259
-	,LPAREN=260
-	,RPAREN=261
-	,SEMICOLON=262
-	,IDENTIFIER=263
-	,NUMBER=264
-	,ASSIGN=265
+	,ID=258
+	,NUM=259
+	,DO=260
+	,WHILE=261
+	,LE=262
+	,GE=263
+	,EQ=264
+	,NE=265
 
 
 #line 215 "/usr/share/bison++/bison.h"
