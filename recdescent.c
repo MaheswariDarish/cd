@@ -1,108 +1,69 @@
 #include <stdio.h>
 #include <string.h>
-#include <stdlib.h>
-
-char ip_sym[15];
-int ip_ptr = 0; // To track the position in the input
-char op[50];    // To store the parsing operations
-
-void advance();
-void e();
-void e_prime();
-void t();
-void t_prime();
-void f();
-
-void e() {
-    strcpy(op, "TE'");
-    printf("E = %-25s", op);
-    printf("E -> TE'\n");
-    t();
-    e_prime();
+#include <ctype.h>
+char input[10];
+int i, error;
+void E();
+void T();
+void Eprime();
+void Tprime();
+void F();
+void main() {
+    i = 0;
+    error = 0;
+    printf("Enter an arithmetic expression: ");
+    gets(input);
+    E();
+    if (strlen(input) == i && error == 0)
+        printf("\nAccepted..!!!\n");
+    else
+        printf("\nRejected..!!!\n");
+}
+void E() {
+    printf("E -> T E'\n");   // Display rule E -> T E'
+    T();       
+    Eprime();  
 }
 
-void e_prime() {
-    if (ip_sym[ip_ptr] == '+') {
-        advance();
-        strcpy(op, "TE' -> + TE'");
-        printf("E' = %-25s", op);
-        printf("E' -> +TE'\n");
-        t();
-        e_prime();
+void Eprime() {
+    if (input[i] == '+' || input[i] == '-') { 
+        printf("E' -> + T E' | - T E'\n");   // Display rule E' -> + 								//T E' | - T E'
+        i++;
+        T();
+        Eprime();
     } else {
-        strcpy(op, "e");
-        printf("E' = %-25s", op);
-        printf("E' -> e\n");
+        printf("E' -> e\n"); 
     }
 }
 
-void t() {
-    strcpy(op, "FT'");
-    printf("T = %-25s", op);
-    printf("T -> FT'\n");
-    f();
-    t_prime();
+void T() {
+    printf("T -> F T'\n");   // Display rule T -> F T'
+    F();       
+    Tprime(); 
 }
-
-void t_prime() {
-    if (ip_sym[ip_ptr] == '*') {
-        advance();
-        strcpy(op, "FT' -> * FT'");
-        printf("T' = %-25s", op);
-        printf("T' -> *FT'\n");
-        f();
-        t_prime();
+void Tprime() {
+    if (input[i] == '*' || input[i] == '/') { 
+        printf("T' -> * F T' | / F T'\n");   // Display rule T' -> * 								//F T' | / F T'
+        i++;
+        F();
+        Tprime();
     } else {
-        strcpy(op, "e");
-        printf("T' = %-25s", op);
-        printf("T' -> e\n");
+        printf("T' -> e\n");   
     }
 }
-
-void f() {
-    if (ip_sym[ip_ptr] == 'i') {
-        advance();
-        strcpy(op, "i");
-        printf("F = %-25s", op);
-        printf("F -> i\n");
-    } else if (ip_sym[ip_ptr] == '(') {
-        advance();
-        e();
-        if (ip_sym[ip_ptr] == ')') {
-            advance();
-            strcpy(op, "(E)");
-            printf("F = %-25s", op);
-            printf("F -> (E)\n");
-        } else {
-            printf("\nSyntax error: Expected ')'\n");
-            exit(1);
-        }
+void F() {
+    if (isalnum(input[i])) {  
+        printf("F -> id\n");   // Display rule F -> id
+        i++;
+    } else if (input[i] == '(') { 
+        printf("F -> ( E )\n");   // Display rule F -> ( E )
+        i++;
+        E();
+        if (input[i] == ')')
+            i++;
+        else
+            error = 1;  // Missing closing parenthesis
     } else {
-        printf("\nSyntax error: Unexpected symbol '%c'\n", ip_sym[ip_ptr]);
-        exit(1);
+        error = 1;  // Invalid character
     }
-}
-
-void advance() {
-    ip_ptr++;
-}
-
-int main() {
-    printf("\nGrammar without left recursion:\n");
-    printf("  E  -> TE' \n  E' -> +TE' | e \n  T  -> FT' \n");
-    printf("  T' -> *FT' | e \n  F  -> (E) | i\n");
-
-    printf("\nEnter the input expression: ");
-    scanf("%s", ip_sym);
-
-    printf("\nParsing Steps:\n");
-    e();
-
-    if (ip_ptr == strlen(ip_sym)) {
-        printf("\nInput expression is valid.\n");
-    } else {
-        printf("\nSyntax error at position %d\n", ip_ptr);
-    }
-
-    return 0;
 }
